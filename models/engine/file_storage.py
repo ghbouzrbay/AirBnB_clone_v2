@@ -12,7 +12,7 @@ from models.user import User
 
 
 class FileStorage:
-     """class that manages storage of hbnb models in JSON format"""
+    """class that manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
