@@ -51,11 +51,11 @@ class HBNBCommand(cmd.Cmd):
         _id = ''
         arg = ''
 
-        if not ('.' in cmd_line and '(' in cmd_line and ')' in cmd_line):
+        if not ('.' in line and '(' in line and ')' in line):
             return line
 
         try:
-            par_line = cmd_line[:]
+            par_line = line[:]
             _cls = par_line[:par_line.find('.')]
             cmd = par_line[par_line.find('.') + 1:par_line.find('(')]
             if cmd not in HBNBCommand.cmd_list:
@@ -76,7 +76,7 @@ class HBNBCommand(cmd.Cmd):
         except Exception as mess:
             pass
         finally:
-            return cmd_line
+            return line
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
