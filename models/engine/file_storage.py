@@ -12,7 +12,12 @@ from models.user import User
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+     """Represent an abstracted storage engine.
+
+    Attributes:
+        __file_path (str): The name of the file to save objects to.
+        __objects (dict): A dictionary of instantiated objects.
+    """
     __file_path = 'file.json'
     __objects = {}
 
@@ -40,7 +45,7 @@ class FileStorage:
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             value = {}
-            value.update(FileStorage.__objects)
+            value.update(FileStorage.__objects) 
             for key_str, val in value.items():
                 value[key_str] = val.to_dict()
             json.dump(value, f)
