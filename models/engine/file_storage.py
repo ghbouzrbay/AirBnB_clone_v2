@@ -58,7 +58,7 @@ class FileStorage:
             js_file = {}
             with open(FileStorage.__file_path, 'r') as f:
                 js_file = json.load(f)
-                for key_str, val in temp.items():
+                for key_str, val in js_file.items():
                     self.all()[key_str] = cls[val['__class__']](**val)
         except FileNotFoundError:
             pass
