@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
             for attribute in new[1:]:
                 new_attribute = attribute.split('=')
                 try:
-                    casted = HBNBCommand.verify_attribute(new_attribute[1])
+                    casted = HBNBCommand.verification(new_attribute[1])
                 except Exception:
                     continue
                 if not casted:
