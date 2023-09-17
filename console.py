@@ -200,12 +200,12 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """ list all objects, or all objects of a class"""
 
-        arg = shlex.split(arg)
+        show = shlex.split(arg)
         object_ls = []
-        if len(args) == 0:
+        if len(show) == 0:
             object_dict = storage.all()
-        elif args[0] in cls_list:
-            object_dict = storage.all(cls_list[args[0]])
+        elif show[0] in cls_list:
+            object_dict = storage.all(cls_list[show[0]])
         else:
             print("** class doesn't exist **")
             return False
