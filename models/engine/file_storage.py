@@ -34,13 +34,13 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        FileStorage.__objects[obj.__class__.__name__ + "." + obj.id] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             value = {}
-            value.update(FileStorage.__objects) 
+            value.update(FileStorage.__objects)
             for key_str, val in value.items():
                 value[key_str] = val.to_dict()
             json.dump(value, f)
@@ -64,7 +64,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Delete obj from __objects If obj is equal to None, the method should not do anything.
+        """Delete obj from __objects If obj = None, method should'nt do anyt.
         Args:
             obj (models.class.<any model>, optional): object to delete.
             Defaults to None.
