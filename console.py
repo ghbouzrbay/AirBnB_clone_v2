@@ -105,8 +105,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
-        print()
-        exit()
+        print("")
+        return True
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
@@ -126,21 +126,28 @@ class HBNBCommand(cmd.Cmd):
             if not args:
                 raise SyntaxError()
             my_list = args.split(" ")
-            obj = eval("{}()".format(my_list[0]))
-            for attr in my_list[1:]:
-                my_att = attr.split('=')
-                try:
-                    casted = HBNBCommand.verify_attribute(my_att[1])
-                except Exception:
-                    continue
-                if not casted:
-                    continue
-                setattr(obj, my_att[0], casted)
+            kay = {}
+            for i in range(1, len(my_list)):
+                my_att, value = tuple(my_list[i].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
+                        continue
+                kay[my_att] = value
+            if kay == {}:
+                obj = eval(my_list[0])()
+            else:
+                obj = eval(my_list[0])(**kwargs)
+                storage.new(obj)
+            print(obj.id)
             obj.save()
-            print("{}".format(obj.id))
+
         except SyntaxError:
             print("** class name missing **")
-        except NameError as e:
+        except NameError:
             print("** class doesn't exist **")
 
     def help_create(self):
