@@ -123,33 +123,26 @@ class HBNBCommand(cmd.Cmd):
 
         Command syntax: create <Class name> <param 1> <param 2> <param 3>...
         Param syntax: <key name>=<value>
-        """
+        """        
         try:
             if not args:
                 raise SyntaxError()
             my_list = args.split(" ")
-            kay = {}
-            for i in range(1, len(my_list)):
-                my_att, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kay[my_att] = value
-            if kay == {}:
-                obj = eval(my_list[0])()
-            else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
+            obj = eval("{}()".format(my_list[0]))
+            for attr in my_list[1:]:
+                my_att = attr.split('=')
+                try:
+                    casted = HBNBCommand.verification(my_att[1])
+                except Exception:
+                    continue
+                if not casted:
+                    continue
+                setattr(obj, my_att[0], casted)
             obj.save()
-
+            print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
-        except NameError:
+        except NameError as e:
             print("** class doesn't exist **")
 
     def help_create(self):
@@ -347,7 +340,7 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
     @classmethod
-    def verify_attribute(cls, attribute):
+    def verification(args, attribute):
         """verifies that an attribute is correctly formatted
 
         Args:
@@ -357,23 +350,23 @@ class HBNBCommand(cmd.Cmd):
             any: attribute.
         """
         if attribute[0] is attribute[-1] is '"':
-            for i, c in enumerate(attribute[1:-1]):
-                if c is '"' and attribute[i] is not '\\':
+            for att, attribu in enumerate(attribute[1:-1]):
+                if attribu is '"' and attribute[att] is not '\\':
                     return None
-                if c is " ":
+                if attribu is " ":
                     return None
             return attribute.strip('"').replace('_', ' ').replace("\\\"", "\"")
         else:
-            flag = 0
-            allowed = "0123456789.-"
-            for c in attribute:
-                if c not in allowed:
+            value = 0
+            const = "0123456789.-"
+            for attribu in attribute:
+                if attribu not in const:
                     return None
-                if c is '.' and flag == 1:
+                if attribu is '.' and value == 1:
                     return None
-                elif c is '.' and flag == 0:
-                    flag = 1
-            if flag == 1:
+                elif attribu is '.' and value == 0:
+                    value = 1
+            if value == 1:
                 return float(attribute)
             else:
                 return int(attribute)
