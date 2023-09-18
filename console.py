@@ -2,16 +2,18 @@
 """ Console Module """
 import cmd
 import sys
+import json
+import shlex
 from models.base_model import BaseModel
-from models.__init__ import storage
 from models.user import User
-from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
+from models.place import Place
+from models.__init__ import storage
 from models.review import Review
-import shlex
-from os import environ
+from models.engine.file_storage import FileStorage
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
