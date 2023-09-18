@@ -1,37 +1,30 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-from models.base_model import BaseModel, Base
 
-# SQLAlchemy modules
-from sqlalchemy import Column
-from sqlalchemy import String
+import models
+from models.base_model import BaseModel, Base
+from os import getenv
+import sqlalchemy
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 
 class User(BaseModel, Base):
-    """
-    Defines a class User
+    """Representation of a user """
+    if models.storage_t == 'db':
+        __tablename__ = 'users'
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=True)
+        last_name = Column(String(128), nullable=True)
+        places = relationship("Place", backref="user")
+        reviews = relationship("Review", backref="user")
+    else:
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""
 
-    Attributes:
-        __tablename__ (str): Users MySQL table name
-
-        email (String): User's email address column
-        password (String): User's password column
-        first_name (String): User's first name column
-        last_name (String): User's last name column
-    """
-    __tablename__ = 'users'
-
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128))
-    last_name = Column(String(128))
-
-    places = relationship('Place',
-                          backref='user',
-                          cascade='all, delete-orphan',
-                          passive_deletes=True)
-    reviews = relationship('Review',
-                           backref='user',
-                           cascade='all, delete-orphan',
-                           passive_deletes=True)
+    def __init__(self, *args, **kwargs):
+        """initializes user"""
+        super().__init__(*args, **kwargs)
