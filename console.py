@@ -120,7 +120,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class
-
         Command syntax: create <Class name> <param 1> <param 2> <param 3>...
         Param syntax: <key name>=<value>
         """
