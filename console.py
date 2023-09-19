@@ -78,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
 
         Command syntax: create <Class name> <param 1> <param 2> <param 3>...
         Param syntax: <key name>=<value>
-        """        
+        """
         try:
             if not args:
                 raise SyntaxError()
@@ -291,7 +291,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -299,10 +299,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -349,11 +349,11 @@ class HBNBCommand(cmd.Cmd):
         Returns:
             any: attribute.
         """
-        if attribute[0] is attribute[-1] is '"':
+        if attribute[0] == attribute[-1] == '"':
             for att, attribu in enumerate(attribute[1:-1]):
-                if attribu is '"' and attribute[att] is not '\\':
+                if attribu == '"' and attribute[att] != '\\':
                     return None
-                if attribu is " ":
+                if attribu == " ":
                     return None
             return attribute.strip('"').replace('_', ' ').replace("\\\"", "\"")
         else:
@@ -362,9 +362,9 @@ class HBNBCommand(cmd.Cmd):
             for attribu in attribute:
                 if attribu not in const:
                     return None
-                if attribu is '.' and value == 1:
+                if attribu == '.' and value == 1:
                     return None
-                elif attribu is '.' and value == 0:
+                elif attribu == '.' and value == 0:
                     value = 1
             if value == 1:
                 return float(attribute)
