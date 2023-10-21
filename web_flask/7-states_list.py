@@ -8,8 +8,8 @@ from models import storage
 from models.state import State
 from models import storage
 
-app = Flask(__name)
-
+app = Flask(__name__)
+	
 @app.teardown_appcontext
 def teardown_session(exception):
     storage.close()
