@@ -1,30 +1,27 @@
 #!/usr/bin/python3
-"""script that starts a Flask web application"""
+"""
+starts a Flask web application
+"""
 
 from flask import Flask, render_template
+from models import *
 from models import storage
-
-
 app = Flask(__name__)
-app.url_map.strict_slashes = False
+
+
+@app.route('/hbnb_filters', strict_slashes=False)
+def filters():
+    """display a HTML page like 6-index.html from static"""
+    states = storage.all("State").values()
+    amenities = storage.all("Amenity").values()
+    return render_template('10-hbnb_filters.html', states=states,
+                           amenities=amenities)
 
 
 @app.teardown_appcontext
-def teardown_db(exception=None):
-    """removes the current SQLAlchemy Session
-    """
-    if storage is not None:
-        storage.close()
-
-
-@app.route('/hbnb_filters')
-def hbnb_filters(id=None):
-    """displays a HTML page: inside the tag BODY"""
-    states = storage.all("State").values()
-    amenities = storage.all("Amenity").values()
-    return render_template('10-hbnb_filters.html',
-                           states=states, amenities=amenities)
-
+def teardown_db(exception):
+    """closes the storage on teardown"""
+    storage.close()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port='5000')
