@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 """script that starts a Flask web application"""
 
-
-# import Flask class from flask module
-# import render_template for rendering templates to browser
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -87,4 +84,3 @@ def number_template_route(n):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
