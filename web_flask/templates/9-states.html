@@ -4,19 +4,19 @@
         <TITLE>HBNB</TITLE>
     </HEAD>
     <BODY>
-        {% if not state_id %}
+        {% if state is mapping %}
             <H1>States</H1>
 	    <UL>
-	        {% for state in states.values()|sort(attribute='name') %}
-		    <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
+	        {% for s in states.values()|sort(attribute="name") %}
+		    <LI>{{ s.id }}: <B>{{ s.name }}</B></LI>
 		{% endfor %}
 	    </UL>
-	{% elif state_id in states%}
-	    {% set state = states[state_id] %}
+	{% elif state is defined %}
 	        <H1>State: {{ state.name }}</H1>
 		<H3>Cities</H3>
 		    <UL>
-			{% for city in state.cities|sort(attribute='name') %}
+			{% for city in state.cities|sort(attribute="name")
+ %}
                             <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
                         {% endfor %}
 		    </UL>
